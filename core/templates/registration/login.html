@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card text-center w-50 justify-content-center" style="float: center">
+    <div class="card-header dark">Авторизация</div>
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            {% if next %}
+                <div class="alert alert-warning">Авторизуйтесь для просмотра страницы</div>
+            {% endif %}
+
+            {% if form.errors %}
+            <div class="alert alert-danger">Неверный логин, либо пароль</div>
+            {% endif %}
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">@</span>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Имя пользователя" />
+                </div>
+                <div class="input-group mt-4">
+                    <span class="input-group-text" id="basic-addon1">...</span>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Пароль"/>
+                </div>
+                <div class="mt-4">
+                    <input type="submit" value="Войти" class="btn btn-primary"/>
+                </div>
+                <input type="hidden" name="next" value="{{ next }}" />
+            </form>
+        </blockquote>
+        <p class="mb-0 mt-4">Впервые у нас? <a href="{% url 'register' %}">Создать аккаунт</a></p>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

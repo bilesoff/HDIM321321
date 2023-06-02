@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <div style="display: flex; align-items: center; gap: 3pt">
+        <a class="btn btn-outline-primary" style="display: inline;" href="{% url 'catalog_list' %}">Назад</a>
+        <h2 style="display:inline;  margin:0">{{object}}</h2>
+    </div>
+    {% if user.username %}
+    <a class="btn btn-primary mt-4" href="javascript:void(0)" onclick="(addToCart('good', '{{ good.id }}'))">Добавить в корзину</a>
+    {% endif %}
+    <hr>
+    <h5>Описание</h5>
+    <p> {{ good.description }} </p>
+
+    <h5> Характеристики </h5>
+    <p>Модель: {{ good.model }}</p>
+    <p>Производитель: {{ good.manufacturer }}</p>
+    <p>Марка: {{ good.mark }}</p>
+    <p>Стоимость: {{ good.price }}</p>
+    <hr>
+
+    <h5>Услуги</h5>
+    <ul class="list-group list-group-flush">
+        {% for service in object.services.all %}
+            <li class="list-group-item">
+                <h6>{{ service }}</h6>
+                <div>
+                    <h6 style="display: inline; margin-right: 6pt">{{ service.price }} Руб.</h6>
+                    {% if user.username %}
+                    <button
+                        onclick="addToCart('service', '{{ service.id }}')"
+                        class="btn btn-primary"
+                    > В корзину </button>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock%}

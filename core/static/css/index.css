@@ -1,0 +1,28 @@
+#content {
+    padding: 12pt 18pt;
+}
+
+.card {
+    margin: 3pt 0;
+}
+
+.catalog-card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.catalog-card .card-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.list-group-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.list-group-item h6 {
+    margin: 0;
+}

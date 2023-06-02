@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  {% block title %}<title>Магазин</title>{% endblock %}
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+  <script src="{% static 'js/index.js' %}"> </script>
+</head>
+
+<body>
+  {% csrf_token %}
+  <nav class="navbar bg-dark border-bottom border-bottom-dark" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Магазин</a>
+      {% if user.username %}
+      <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Привет, {{ user.username | title }}!</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'catalog_list' %}">Каталог</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'cart' %}">Корзина</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+            </li>
+          </ul>
+        </div>
+      {% else %}
+        <a class='btn btn-light' href="{% url 'login' %}">Войти</a>
+      {% endif %}
+    </div>
+  </nav>
+  <div class="container-fluid" style="display: flex; align-items: center; justify-content: center; flex-direction: column;" id="content">
+    {% block content %}
+    {% endblock %}
+
+    {% block pagination %}
+    {% if is_paginated %}
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}"><span aria-hidden="true">&laquo;</span></a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+          </li>
+        {% endif %}
+        <li class="page-item disabled">
+          <a class="page-link">{{ page_obj.number }}</a>
+        </li>
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="{{ request.path }}?page={{ page_obj.next_page_number }}"><span aria-hidden="true">&raquo;</span></a>
+          </li>
+        {% endif %}
+        </span>
+      </ul>
+    {% endif %}
+  {% endblock %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+{% for good in object_list %}
+    <div class="card catalog-card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <span>{{ good.manufacturer }}</span>
+                <span>{{ good.price }} Рублей</span>
+            </h5>
+            <p class="card-subtitle"> {{ good.name }}</p>
+            <div clas="btn-group" role="group" style="text-align:right; justify-content: flex-end;">
+                <a href="{{ good.get_absolute_url }}" class="btn btn-outline-secondary">Подробнее</a>
+                {% if user.username %}
+                <a href="javascript:void(0)" class="btn btn-primary" onclick="addToCart('good', '{{ good.id }}')">В корзину</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}

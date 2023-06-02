@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    {% if cart.is_empty %}
+    <h2> Тут пока пусто </h2>
+    <a class="mt-4" href="{% url 'catalog_list' %}"> За покупками! </a>
+    {% else %}
+    <h2> Корзина </h2>
+    <hr>
+    <h3>Товары</h3>
+    {% if cart.goods.all.count == 0 %}
+        <p> Тут пока пусто </p>
+        <a class="mt-4" href="{% url 'catalog_list' %}"> За покупками! </a>
+    {% endif %}
+    {% for position in cart.goods.all %}
+        <div class="card catalog-card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <span>{{ position }}</span>
+                    <span>{{ position.price }} Рублей</span>
+                </h5>
+                <div clas="btn-group" role="group" style="text-align:right; justify-content: flex-end;">
+                    <button
+                        class="btn btn-primary"
+                        onclick="updatePositionAmount('good', '{{ position.id }}', '{{ position.amount }}', '+' )"
+                    >+</button>
+                    <button
+                        class="btn btn-primary"
+                        onclick="updatePositionAmount('good', '{{ position.id }}', '{{ position.amount }}', '-' )"
+                    >-</button>
+                    <button
+                        class="btn btn-outline-danger"
+                        onclick="updatePositionAmount('good', '{{ position.id }}', '{{ position.amount }}', 'del' )"
+                    >Удалить</button>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <hr>
+    <h3>Услуги</h3>
+    {% if cart.services.all.count == 0 %}
+        <p> Тут пока пусто </p>
+        <a class="mt-4" href="{% url 'catalog_list' %}"> За покупками! </a>
+    {% endif %}
+    {% for position in cart.services.all %}
+    <div class="card catalog-card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <span>{{ position }}</span>
+                <span>{{ position.price }} Рублей</span>
+            </h5>
+            <div clas="btn-group" role="group" style="text-align:right; justify-content: flex-end;">
+                <button
+                    onclick="updatePositionAmount('service', '{{ position.id }}', '1', 'del' )"
+                    class="btn btn-outline-danger"
+                >Удалить</button>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+    <hr>
+    <h3 style="text-align: right">Итого: {{ cart.total_price }}</h3>
+
+
+
+
+
+    {% endif %}
+{% for good in object_list %}
+    <div class="card catalog-card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <span>{{ good.manufacturer }}</span>
+                <span>{{ good.price }} Рублей</span>
+            </h5>
+            <p class="card-subtitle"> {{ good.name }}</p>
+            <div clas="btn-group" role="group" style="text-align:right; justify-content: flex-end;">
+                <a href="{{ good.get_absolute_url }}" class="btn btn-outline-secondary">Подробнее</a>
+                <a href="javascript:void(0)" class="btn btn-primary">В корзину</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+{% endblock %}
